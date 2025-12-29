@@ -1,6 +1,10 @@
 # CheckPack 🎒
 
-**CheckPack** is a modern, mobile-first inventory and packing list management application built with robust web technologies and wrapped for Android performance. It helps users organize their items, create packing lists, and track inventory with ease.
+**CheckPack** is a simple inventory and packing list app for Android. It helps you organize items and track what you pack.
+
+## 📥 Download
+
+Want to try it out? Download the latest `.apk` from the [Releases](https://github.com/rayyan-naufal/CheckPack/releases) page.
 
 ## 🚀 Key Features
 

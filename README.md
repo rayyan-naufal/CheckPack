@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# CheckPack 🎒
 
-## Project info
+**CheckPack** is a modern, mobile-first inventory and packing list management application built with robust web technologies and wrapped for Android performance. It helps users organize their items, create packing lists, and track inventory with ease.
 
-**URL**: https://lovable.dev/projects/755fd703-dd9b-4215-9753-5cabe6d0b9ee
+## 🚀 Key Features
 
-## How can I edit this code?
+*   **Smart Inventory Management**: Easily add, edit, and categorize items.
+*   **Packing Lists**: Create and manage detailed packing lists for trips or projects.
+*   **Excel Integration**: Seamlessly export and import data using `.xlsx` files, preserving structure and special characters (including emojis 🎒).
+*   **Mobile Optimized**: Designed with a responsive UI/UX perfect for Android devices.
+*   **Offline Capable**: Uses local SQLite database for reliable offline data access.
+*   **Modern UI**: Built with a clean, consistent aesthetic using Tailwind CSS and shadcn/ui.
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
 
-**Use Lovable**
+*   **Frontend**: React, TypeScript, Vite
+*   **Styling**: Tailwind CSS, shadcn/ui, Lucide Icons
+*   **State & Forms**: React Query, React Hook Form, Zod
+*   **Mobile Wrapper**: Capacitor (Android)
+*   **Database**: SQLite (via Capacitor Community)
+*   **Utilities**: `xlsx` (Excel handling), `date-fns` (Date management)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/755fd703-dd9b-4215-9753-5cabe6d0b9ee) and start prompting.
+## 📦 Installation & Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+Follow these steps to set up the project locally:
 
-**Use your preferred IDE**
+### Prerequisites
+*   Node.js (v18+ recommended)
+*   Android Studio (for Android build)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Steps
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/CheckPack.git
+    cd CheckPack
+    ```
 
-Follow these steps:
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3.  **Run Web Development Server**
+    ```bash
+    npm run dev
+    ```
+    The app will be accessible locally (usually at `http://localhost:8080`).
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+4.  **Run on Android**
+    The project is configured for Android using Capacitor.
 
-# Step 3: Install the necessary dependencies.
-npm i
+    *   Build the web assets:
+        ```bash
+        npm run build
+        ```
+    *   Sync with Capacitor to copy assets to the Android project:
+        ```bash
+        npx cap sync
+        ```
+    *   Open the project in Android Studio:
+        ```bash
+        npx cap open android
+        ```
+    *   From Android Studio, you can run the app on a connected device or emulator.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 📱 Building for Production
 
-**Edit a file directly in GitHub**
+To create a release-ready APK or Bundle:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1.  Run the build command:
+    ```bash
+    npm run build
+    ```
+2.  Sync the changes:
+    ```bash
+    npx cap sync android
+    ```
+3.  Open Android Studio (`npx cap open android`) and navigate to **Build > Generate Signed Bundle / APK**.
 
-**Use GitHub Codespaces**
+## 🤝 Contributing
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Contributions are excellent!
+1.  Fork the repository.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
 
-## What technologies are used for this project?
+## 📄 License
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/755fd703-dd9b-4215-9753-5cabe6d0b9ee) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Distributed under the MIT License.

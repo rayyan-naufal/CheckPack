@@ -164,4 +164,9 @@ All colors MUST be HSL.
   .mobile-transition {
     transition: all var(--transition-base);
   }
+
+  .bg-header-gradient {
+    background: linear-gradient(to bottom, hsl(var(--background)), hsl(var(--muted)/0.5));
+    border-bottom: 1px solid hsl(var(--border)/0.5);
+  }
 }

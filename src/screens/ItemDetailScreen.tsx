@@ -12,19 +12,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { storage } from "@/data/storage";
 import { inventoryLogic } from "@/logic/inventoryLogic";
-import { Item, Category, Location } from "@/types";
+import { Item } from "@/types";
 import { toast } from "sonner";
+import {
+  useCategories,
+  useLocations,
+  useItem,
+  useAddItem,
+  useUpdateItem,
+  useDeleteItem
+} from "@/hooks/useInventory";
 
 export const ItemDetailScreen = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const isNewItem = id === "new";
+  const isNewItem = id === "new" || !id;
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [locations, setLocations] = useState<Location[]>([]);
-  
+  // React Query Hooks
+  const { data: categories = [] } = useCategories();
+  const { data: locations = [] } = useLocations();
+
+  // Conditionally fetch item if not new
+  const { data: item } = useItem(isNewItem ? "" : id!);
+
+  const addItemMutation = useAddItem();
+  const updateItemMutation = useUpdateItem();
+  const deleteItemMutation = useDeleteItem();
+
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -32,25 +47,19 @@ export const ItemDetailScreen = () => {
     note: "",
   });
 
+  // Load item data into form when fetched
   useEffect(() => {
-    setCategories(storage.getCategories());
-    setLocations(storage.getLocations());
-
-    if (!isNewItem && id) {
-      const items = storage.getItems();
-      const item = items.find((i) => i.id === id);
-      if (item) {
-        setFormData({
-          name: item.name,
-          category: item.category,
-          location: item.location,
-          note: item.note,
-        });
-      }
+    if (item && !isNewItem) {
+      setFormData({
+        name: item.name,
+        category: item.category,
+        location: item.location,
+        note: item.note || "",
+      });
     }
-  }, [id, isNewItem]);
+  }, [item, isNewItem]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!formData.name.trim()) {
       toast.error("Please enter an item name");
       return;
@@ -64,30 +73,37 @@ export const ItemDetailScreen = () => {
       return;
     }
 
-    if (isNewItem) {
-      const newItem: Item = {
-        id: inventoryLogic.generateId(),
-        name: formData.name,
-        category: formData.category,
-        location: formData.location,
-        note: formData.note,
-      };
-      storage.addItem(newItem);
-      toast.success("Item added successfully");
-    } else if (id) {
-      storage.updateItem(id, formData);
-      toast.success("Item updated successfully");
+    try {
+      if (isNewItem) {
+        const newItem: Item = {
+          id: inventoryLogic.generateId(),
+          name: formData.name,
+          category: formData.category,
+          location: formData.location,
+          note: formData.note,
+        };
+        await addItemMutation.mutateAsync(newItem);
+      } else if (id) {
+        await updateItemMutation.mutateAsync({ id, updates: formData });
+      }
+      // Toast handled by mutation hooks
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save item");
     }
-
-    navigate("/");
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (id && !isNewItem) {
       if (window.confirm("Are you sure you want to delete this item?")) {
-        storage.deleteItem(id);
-        toast.success("Item deleted");
-        navigate("/");
+        try {
+          await deleteItemMutation.mutateAsync(id);
+          navigate("/");
+        } catch (error) {
+          console.error(error);
+          toast.error("Failed to delete item");
+        }
       }
     }
   };
@@ -136,7 +152,7 @@ export const ItemDetailScreen = () => {
             </SelectTrigger>
             <SelectContent>
               {categories.map((cat) => (
-                <SelectItem key={cat.id} value={cat.name}>
+                <SelectItem key={cat.id} value={cat.name} className="h-12 text-base cursor-pointer">
                   {cat.icon} {cat.name}
                 </SelectItem>
               ))}
@@ -155,7 +171,7 @@ export const ItemDetailScreen = () => {
             </SelectTrigger>
             <SelectContent>
               {locations.map((loc) => (
-                <SelectItem key={loc.id} value={loc.name}>
+                <SelectItem key={loc.id} value={loc.name} className="h-12 text-base cursor-pointer">
                   {loc.icon} {loc.name}
                 </SelectItem>
               ))}
